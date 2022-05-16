@@ -6,7 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -22,9 +24,28 @@ public class UserController {
         return new ResponseEntity<>(userService.registerUser(user), HttpStatus.CREATED);
     }
 
-    @GetMapping("/get-all" )
+    @GetMapping("/get-all")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, String>> loginUser(@RequestBody Map<String, Object> userMap) throws Exception {
+        String email = (String) userMap.get("email");
+        String password = (String) userMap.get("password");
+        User user = userService.findByEmailAndPassword(email, password);
+        System.out.println(user.getUserId());
+        if (!user.getEmail().isEmpty()) {
+            Map<String, String> map = new HashMap<>();
+            map.put("message", "LoogedIn Successfully");
+            return new ResponseEntity<>(map, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/search-by-email")
+    public User searchByEmail(@RequestBody String email) {
+        return userService.findByEmail(email);
     }
 
 }
