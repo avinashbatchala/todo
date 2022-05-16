@@ -1,27 +1,28 @@
 package com.nashb.todo.users;
 
 import lombok.Data;
-import lombok.Generated;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
-@Table
+@Table(name = "users")
 public class User {
 
     @Id
-    @Generated
-    private int userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long userId;
 
-    @Column
+    @Column(name = "first_name", nullable = false)
     private String firstName;
-    @Column
+
+    @Column(name = "last_name", nullable = false)
     private String lastName;
+
+    @Column(name = "email", nullable = false)
     private String email;
+
+    @Column(name = "password", nullable = false)
     private String password;
 
 }
