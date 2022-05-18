@@ -1,5 +1,6 @@
 package com.nashb.todo.users;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +29,8 @@ public class UserServiceImpl implements UserService {
         if (userRepository.countAllByEmail(user.getEmail()) > 0) {
             throw new Exception("User Email Already Exists");
         }
+        String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(10));
+        user.setPassword(hashedPassword);
         return userRepository.save(user);
     }
 
@@ -38,11 +41,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByEmailAndPassword(String email, String password)  {
-        return userRepository.findUserByEmailAndPassword(email, password);
+        String pwd = findByEmail(email).getPassword();
+        return userRepository.findUserByEmailAndPassword(email, pwd);
     }
 
     @Override
     public User findByEmail(String email) {
         return userRepository.findUserByEmail(email);
+    }
+
+    @Override
+    public List<User> findAllUsersByFirstName(String firstName) {
+        return userRepository.findUserByFirstName(firstName);
     }
 }

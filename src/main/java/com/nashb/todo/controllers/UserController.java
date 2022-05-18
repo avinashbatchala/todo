@@ -37,7 +37,7 @@ public class UserController {
         System.out.println(user.getUserId());
         if (!user.getEmail().isEmpty()) {
             Map<String, String> map = new HashMap<>();
-            map.put("message", "LoogedIn Successfully");
+            map.put("message", "LogedIn Successfully");
             return new ResponseEntity<>(map, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -46,6 +46,11 @@ public class UserController {
     @GetMapping("/search-by-email")
     public User searchByEmail(@RequestBody String email) {
         return userService.findByEmail(email);
+    }
+
+    @GetMapping("/first-name")
+    public List<User> getAllUsersByFirstName(@RequestBody String firstName) {
+        return userService.findAllUsersByFirstName(firstName);
     }
 
 }

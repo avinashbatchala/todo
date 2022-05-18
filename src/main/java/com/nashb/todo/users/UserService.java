@@ -8,4 +8,5 @@ public interface UserService {
     List<User> getAllUsers();
     User findByEmailAndPassword(String email, String Password) throws Exception;
     User findByEmail(String email);
+    List<User> findAllUsersByFirstName(String firstName);
 }
